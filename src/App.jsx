@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import t1 from './assets/t1.gif';
 import t2 from './assets/t2.gif';
 import t3 from './assets/t3.gif';
+import t4 from './assets/t4.gif';
+import t5 from './assets/t5.gif';
 import t6 from './assets/t6.gif';
 import t7 from './assets/t7.gif';
 import t8 from './assets/t8.gif';
@@ -18,14 +20,14 @@ import t16 from './assets/t16.gif';
 import t17 from './assets/t17.gif';
 import t18 from './assets/t18.gif';
 import t19 from './assets/t19.gif';
-
+import t20 from './assets/t20.gif';
 
 
 const App = () => {
   const [backgroundImage, setBackgroundImage] = useState(t1);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const gifs = [t1, t2, t3, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19];
+  const gifs = [t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20];
 
   const changeBackground = (newGif) => {
     setBackgroundImage(newGif);

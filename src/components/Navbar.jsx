@@ -12,13 +12,13 @@ const NavbarContainer = styled.div`
   top: 0;
   left: 0;
   background: transparent;
-  filter: drop-shadow(0 0 0.5rem #e6e2d3);
+  filter: drop-shadow(0 0 0.3rem #e6e2d3);
   z-index: 1000;
 `;
 
 const MenuIcon = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 `;
 
@@ -132,7 +132,7 @@ const Navbar = ({ gifs, changeBackground, toggleMenu, isMenuOpen }) => {
     return (
     <>
     <NavbarContainer>
-      <MenuIcon img src="/gear.png" onClick={handleToggleMenu}>
+      <MenuIcon img src="/gear2.png" onClick={handleToggleMenu}>
       </MenuIcon>
       </NavbarContainer>
       <Menu isOpen={isMenuOpen}>

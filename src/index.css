@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=VT323');
+
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'VT323';
+}
+
+.app {
+  height: 100vh;
+  position: relative;
+}
+
+.blurStuff {
+  transition: filter 0.3s ease;
+}
+
+.blurStuff.blur {
+  filter: blur(3px);
+}
+

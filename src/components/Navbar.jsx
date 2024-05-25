@@ -12,7 +12,7 @@ const NavbarContainer = styled.div`
   top: 0;
   left: 0;
   background: transparent;
-  filter: drop-shadow(0 0 0.3rem #e6e2d3);
+  filter: drop-shadow(0 0 0.1rem #e6e2d3);
   z-index: 1000;
 `;
 
@@ -26,9 +26,12 @@ const Menu = styled.ul`
   list-style: none;
   display: ${(props) => (props.isOpen ? 'flex' : 'none')};
   position: absolute;
-  top: 100px;
-  justify-content: space-around;
+  top: 15px;
+  align-items: center;
+  justify-content: center;
   background-color: transparent;
+  max-height: calc(100vh - 95px);
+  overflow-y: auto;
   width: 100%;
   padding: 0px;
   z-index: 1001;
@@ -40,8 +43,8 @@ const Menu = styled.ul`
   }
 
   button {
-    font-size: 25px;
-    color: white;
+    font-size: 20px;
+    color: black;
     font-family: 'VT323';
     position: relative;
     display: inline-block;
@@ -68,8 +71,7 @@ button {
     margin: 10px;
     font-family: 'VT323';
     text-transform: uppercase;
-    
-    font-size: 25px;
+    font-size: 20px; // whole button size 
     color: white;
   }
 

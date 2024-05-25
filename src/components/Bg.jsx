@@ -9,7 +9,7 @@ const Bg = ({ backgroundImage }) => {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        transition: 'background-image 0.7s ease',
+        transition: 'background-image 0.7s ease-in-out',
       }}
     ></div>
   );

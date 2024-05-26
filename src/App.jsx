@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
+import Pomo from './components/Pomo';
 import Bg from './components/Bg';
 import Navbar from './components/Navbar';
 import t1 from './assets/t1.gif';
@@ -22,23 +23,89 @@ import t18 from './assets/t18.gif';
 import t19 from './assets/t19.gif';
 import t20 from './assets/t20.gif';
 
-
 const App = () => {
   const [backgroundImage, setBackgroundImage] = useState(t1);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
+  const [loopInterval, setLoopInterval] = useState(null);
 
-  const gifs = [t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20];
+  const gifs = [
+    t1,
+    t2,
+    t3,
+    t4,
+    t5,
+    t6,
+    t7,
+    t8,
+    t9,
+    t10,
+    t11,
+    t12,
+    t13,
+    t14,
+    t15,
+    t16,
+    t17,
+    t18,
+    t19,
+    t20,
+  ];
+
+  // Preload all images
+  useLayoutEffect(() => {
+    gifs.forEach((gif) => {
+      new Image().src = gif;
+    });
+  }, [gifs]);
 
   const changeBackground = (newGif) => {
     setBackgroundImage(newGif);
     setIsMenuOpen(false); // Close the menu after selecting a background
   };
 
+  const startLoop = () => {
+    const interval = setInterval(() => {
+      setBackgroundImage((prev) => {
+        const currentIndex = gifs.indexOf(prev);
+        const nextIndex = (currentIndex + 1) % gifs.length;
+        return gifs[nextIndex];
+      });
+    }, 5000);
+    setLoopInterval(interval);
+  };
+
+  const stopLoop = () => {
+    if (loopInterval) {
+      clearInterval(loopInterval);
+      setLoopInterval(null);
+    }
+  };
+
+  const toggleLoop = () => {
+    if (isLooping) {
+      stopLoop();
+    } else {
+      startLoop();
+    }
+    setIsLooping(!isLooping);
+  };
+
   return (
     <div className='app'>
-      <Navbar gifs={gifs} changeBackground={changeBackground} toggleMenu={() => setIsMenuOpen(!isMenuOpen)} isMenuOpen={isMenuOpen}/>
-     <div className={`blurStuff ${isMenuOpen ? 'blur' : ''}`}>
-      < Bg backgroundImage={backgroundImage} />
+      <Navbar
+        gifs={gifs}
+        changeBackground={changeBackground}
+        toggleMenu={() => setIsMenuOpen(!isMenuOpen)}
+        isMenuOpen={isMenuOpen}
+        toggleLoop={toggleLoop}
+        isLooping={isLooping}
+      />
+      <div className='pomo'>
+        <Pomo />
+      </div>
+      <div className={`blurStuff ${isMenuOpen ? 'blur' : ''}`}>
+        <Bg backgroundImage={backgroundImage} />
       </div>
     </div>
   );

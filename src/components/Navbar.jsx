@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-
-
 const NavbarContainer = styled.div`
   display: flex;
   align-items: center;
@@ -36,8 +34,7 @@ const Menu = styled.ul`
   padding: 0px;
   z-index: 1001;
   flex-wrap: wrap;
-  
- 
+
   li {
     padding: 10px 0;
   }
@@ -50,63 +47,53 @@ const Menu = styled.ul`
     display: inline-block;
     vertical-align: top;
     text-transform: uppercase;
-    
-    cursor: pointer;
-    
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
   }
 
   button:active {
     top: 2px;
   }
 
-button {
+  button {
     position: relative;
     display: block;
     margin: 10px;
     font-family: 'VT323';
     text-transform: uppercase;
-    font-size: 20px; // whole button size 
+    font-size: 20px; // whole button size
     color: white;
   }
 
   button::before {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 10px;
-        bottom: 10px;
-        left: -10px;
-        right: -10px;
-        background: black;
-        z-index: -1;
-    }
+    content: '';
+    display: block;
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: -10px;
+    right: -10px;
+    background: black;
+    z-index: -1;
+  }
 
+  button::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: -6px;
+    right: -6px;
+    background: black;
+    z-index: -1;
+  }
 
-    button::after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 4px;
-        bottom: 4px;
-        left: -6px;
-        right: -6px;
-        background: black;
-        z-index: -1;
-      }
-
-      button {
-        padding: 10px 10px;
-        position: relative;
-        background: black;
-        width: auto;
-        z-index: 2;
-      }
+  button {
+    padding: 10px 10px;
+    position: relative;
+    background: black;
+    width: auto;
+    z-index: 2;
+  }
 `;
 
 const Overlay = styled.div`
@@ -116,35 +103,46 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: trasnparent; 
+  background: trasnparent;
   z-index: 998; /* Ensure overlay is below the menu */
 `;
 
+const Navbar = ({
+  gifs,
+  changeBackground,
+  toggleMenu,
+  isMenuOpen,
+  toggleLoop,
+  isLooping,
+}) => {
+  const handleToggleMenu = () => {
+    toggleMenu();
+  };
 
-const Navbar = ({ gifs, changeBackground, toggleMenu, isMenuOpen }) => {
-    const handleToggleMenu = () => {
-      toggleMenu();
-    };
-  
-    const handleBackgroundChange = (gif) => {
-      changeBackground(gif);
-    };
-  
-  
-    return (
+  const handleBackgroundChange = (gif) => {
+    changeBackground(gif);
+  };
+
+  return (
     <>
-    <NavbarContainer>
-      <MenuIcon img src="/gear2.png" onClick={handleToggleMenu}>
-      </MenuIcon>
+      <NavbarContainer>
+        <MenuIcon img src='/gear2.png' onClick={handleToggleMenu}></MenuIcon>
       </NavbarContainer>
       <Menu isOpen={isMenuOpen}>
         {gifs.map((gif, index) => (
           <li key={index}>
-            <button onClick={() => handleBackgroundChange(gif)}>Background {index + 1}</button>
+            <button onClick={() => handleBackgroundChange(gif)}>
+              Background {index + 1}
+            </button>
           </li>
         ))}
+        <li>
+          <button onClick={toggleLoop}>
+            {isLooping ? 'Stop Loop' : 'Start Loop'}
+          </button>
+        </li>
       </Menu>
-    <Overlay isOpen={isMenuOpen} onClick={handleToggleMenu} />
+      <Overlay isOpen={isMenuOpen} onClick={handleToggleMenu} />
     </>
   );
 };

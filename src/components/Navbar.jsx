@@ -10,13 +10,13 @@ const NavbarContainer = styled.div`
   top: 0;
   left: 0;
   background: transparent;
-  filter: drop-shadow(0 0 0.1rem #e6e2d3);
   z-index: 1000;
 `;
 
 const MenuIcon = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(0 0 2px silver);
   cursor: pointer;
 `;
 
@@ -47,6 +47,15 @@ const Menu = styled.ul`
     display: inline-block;
     vertical-align: top;
     text-transform: uppercase;
+
+    cursor: pointer;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 
   button:active {

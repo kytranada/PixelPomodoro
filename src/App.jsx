@@ -101,10 +101,8 @@ const App = () => {
         toggleLoop={toggleLoop}
         isLooping={isLooping}
       />
-      <div className='pomo'>
-        <Pomo />
-      </div>
       <div className={`blurStuff ${isMenuOpen ? 'blur' : ''}`}>
+        <Pomo />
         <Bg backgroundImage={backgroundImage} />
       </div>
     </div>

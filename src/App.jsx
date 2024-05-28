@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Pomo from './components/Pomo';
 import Bg from './components/Bg';
 import Navbar from './components/Navbar';
@@ -24,7 +24,7 @@ import t19 from './assets/t19.gif';
 import t20 from './assets/t20.gif';
 
 const App = () => {
-  const [backgroundImage, setBackgroundImage] = useState(t1);
+  const [backgroundImage, setBackgroundImage] = useState(t3);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
   const [loopInterval, setLoopInterval] = useState(null);
@@ -52,8 +52,17 @@ const App = () => {
     t20,
   ];
 
+  useEffect(() => {
+    alert(`
+      Welcome to PixelPomodoro!
+      Click on the gear icon to change the background.
+      Click on the clock to start or edit the timer.
+      PS - You can move the timer around by dragging it!
+    `);
+  }, []);
+
   // Preload all images
-  useLayoutEffect(() => {
+  useEffect(() => {
     gifs.forEach((gif) => {
       new Image().src = gif;
     });
@@ -102,6 +111,7 @@ const App = () => {
         isLooping={isLooping}
       />
       <div className={`blurStuff ${isMenuOpen ? 'blur' : ''}`}>
+        alert('Time is up!');
         <Pomo />
         <Bg backgroundImage={backgroundImage} />
       </div>

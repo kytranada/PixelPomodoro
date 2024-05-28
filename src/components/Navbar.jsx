@@ -22,7 +22,7 @@ const MenuIcon = styled.img`
 
 const Menu = styled.ul`
   list-style: none;
-  display: ${(props) => (props.isOpen ? 'flex' : 'none')};
+  display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
   position: absolute;
   top: 15px;
   align-items: center;
@@ -41,15 +41,18 @@ const Menu = styled.ul`
 
   button {
     font-size: 20px;
-    color: black;
+    color: white;
     font-family: 'VT323';
     position: relative;
     display: inline-block;
     vertical-align: top;
     text-transform: uppercase;
-
     cursor: pointer;
-
+    margin: 10px;
+    background: black;
+    padding: 10px 10px;
+    width: auto;
+    z-index: 2;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -60,16 +63,6 @@ const Menu = styled.ul`
 
   button:active {
     top: 2px;
-  }
-
-  button {
-    position: relative;
-    display: block;
-    margin: 10px;
-    font-family: 'VT323';
-    text-transform: uppercase;
-    font-size: 20px; // whole button size
-    color: white;
   }
 
   button::before {
@@ -95,24 +88,16 @@ const Menu = styled.ul`
     background: black;
     z-index: -1;
   }
-
-  button {
-    padding: 10px 10px;
-    position: relative;
-    background: black;
-    width: auto;
-    z-index: 2;
-  }
 `;
 
 const Overlay = styled.div`
-  display: ${(props) => (props.isOpen ? 'block' : 'none')};
+  display: ${(props) => (props.$isOpen ? 'block' : 'none')};
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: trasnparent;
+  background: transparent;
   z-index: 998; /* Ensure overlay is below the menu */
 `;
 
@@ -133,11 +118,11 @@ const Navbar = ({
   };
 
   return (
-    <>
+    <div>
       <NavbarContainer>
-        <MenuIcon img src='/gear2.png' onClick={handleToggleMenu}></MenuIcon>
+        <MenuIcon src='/gear2.png' onClick={handleToggleMenu}></MenuIcon>
       </NavbarContainer>
-      <Menu isOpen={isMenuOpen}>
+      <Menu $isOpen={isMenuOpen}>
         {gifs.map((gif, index) => (
           <li key={index}>
             <button onClick={() => handleBackgroundChange(gif)}>
@@ -151,8 +136,8 @@ const Navbar = ({
           </button>
         </li>
       </Menu>
-      <Overlay isOpen={isMenuOpen} onClick={handleToggleMenu} />
-    </>
+      <Overlay $isOpen={isMenuOpen} onClick={handleToggleMenu} />
+    </div>
   );
 };
 

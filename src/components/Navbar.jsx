@@ -38,55 +38,43 @@ const Menu = styled.ul`
   li {
     padding: 10px 0;
   }
+`;
 
-  button {
-    font-size: 20px;
-    color: white;
-    font-family: 'VT323';
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin: 10px;
-    background: black;
-    padding: 10px 10px;
-    width: auto;
-    z-index: 2;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
+const Button = styled.button`
+  margin: 6px;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: white;
+  font-family: 'VT323';
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
+  background: black;
+  z-index: 2;
 
-  button:active {
+  &:active {
     top: 2px;
   }
-
-  button::before {
+  &::before,
+  &::after {
     content: '';
     display: block;
     position: absolute;
+    background: black;
+    z-index: -1;
+  }
+  &::before {
     top: 10px;
     bottom: 10px;
     left: -10px;
     right: -10px;
-    background: black;
-    z-index: -1;
   }
-
-  button::after {
-    content: '';
-    display: block;
-    position: absolute;
+  &::after {
     top: 4px;
     bottom: 4px;
     left: -6px;
     right: -6px;
-    background: black;
-    z-index: -1;
   }
 `;
 
@@ -125,15 +113,15 @@ const Navbar = ({
       <Menu $isOpen={isMenuOpen}>
         {gifs.map((gif, index) => (
           <li key={index}>
-            <button onClick={() => handleBackgroundChange(gif)}>
+            <Button onClick={() => handleBackgroundChange(gif)}>
               Background {index + 1}
-            </button>
+            </Button>
           </li>
         ))}
         <li>
-          <button onClick={toggleLoop}>
+          <Button onClick={toggleLoop}>
             {isLooping ? 'Stop Loop' : 'Start Loop'}
-          </button>
+          </Button>
         </li>
       </Menu>
       <Overlay $isOpen={isMenuOpen} onClick={handleToggleMenu} />

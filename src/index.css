@@ -8,11 +8,7 @@ html,
   height: 100%;
   overflow: hidden;
   font-family: 'VT323', monospace;
-}
-
-.app {
-  height: 100vh;
-  position: relative;
+  text-transform: uppercase;
 }
 
 .blurStuff {

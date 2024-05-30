@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Pomo from './components/Pomo';
 import Bg from './components/Bg';
 import Navbar from './components/Navbar';
+import Task from './components/Task';
 import t1 from './assets/t1.gif';
 import t2 from './assets/t2.gif';
 import t3 from './assets/t3.gif';
@@ -55,9 +56,12 @@ const App = () => {
   useEffect(() => {
     alert(`
       Welcome to PixelPomodoro!
+      
       Click on the gear icon to change the background.
-      Click on the clock to start or edit the timer.
-      PS - You can move the timer around by dragging it!
+      
+      You can move a few things around
+      
+      Hint - If you're on desktop, try resizing your browser! ;)
     `);
   }, []);
 
@@ -66,7 +70,7 @@ const App = () => {
     gifs.forEach((gif) => {
       new Image().src = gif;
     });
-  }, [gifs]);
+  }, []);
 
   const changeBackground = (newGif) => {
     setBackgroundImage(newGif);
@@ -111,8 +115,8 @@ const App = () => {
         isLooping={isLooping}
       />
       <div className={`blurStuff ${isMenuOpen ? 'blur' : ''}`}>
-        alert('Time is up!');
         <Pomo />
+        <Task />
         <Bg backgroundImage={backgroundImage} />
       </div>
     </div>

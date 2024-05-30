@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Draggable from './Draggable';
 
 const PomoText = styled.div`
   text-align: center;
@@ -10,55 +11,44 @@ const PomoText = styled.div`
     margin: 0;
     font-size: 45px;
   }
-  button {
-    margin: 6px;
-    text-transform: uppercase;
-    font-size: 20px;
-    color: white;
-    font-family: 'VT323';
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    padding: 10px;
-    background: black;
-    z-index: 2;
-  }
-  button:active {
+`;
+
+const Button = styled.button`
+  margin: 6px;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: white;
+  font-family: 'VT323';
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
+  background: black;
+  z-index: 2;
+
+  &:active {
     top: 2px;
   }
-  button::before,
-  button::after {
+  &::before,
+  &::after {
     content: '';
     display: block;
     position: absolute;
     background: black;
     z-index: -1;
   }
-  button::before {
+  &::before {
     top: 10px;
     bottom: 10px;
     left: -10px;
     right: -10px;
   }
-  button::after {
+  &::after {
     top: 4px;
     bottom: 4px;
     left: -6px;
     right: -6px;
   }
-`;
-
-const DraggableDiv = styled.div`
-  position: absolute;
-  top: ${(props) => props.y}px;
-  left: ${(props) => props.x}px;
-  transform: translate(-50%, -50%);
-  padding: 10px;
-  background-color: transparent;
-  border-radius: 120px;
-  z-index: 1000;
-  max-width: 300px;
-  touch-action: none;
 `;
 
 const TimeDisplay = styled.div`
@@ -80,29 +70,14 @@ const TimeInput = styled.input`
 `;
 
 const Pomo = () => {
-  const [time, setTime] = useState(25 * 60); // start at 25 minutes
+  const [time, setTime] = useState(25 * 60 * 1000); // start at 25 minutes (in milliseconds)
   const [isActive, setIsActive] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [position, setPosition] = useState({
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2,
-  });
-
-  useEffect(() => {
-    const handleResize = () =>
-      setPosition({
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
-      });
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     let timer;
     if (isActive && time > 0) {
-      timer = setInterval(() => setTime((prevTime) => prevTime - 1), 1000);
+      timer = setInterval(() => setTime((prevTime) => prevTime - 10), 10); // decrease by 10ms
     } else if (!isActive && time !== 0) {
       clearInterval(timer);
     } else if (time === 0) {
@@ -116,15 +91,23 @@ const Pomo = () => {
     if (action === 'stop') setIsActive(false);
     if (action === 'restart') {
       setIsActive(false);
-      setTime(25 * 60);
+      setTime(25 * 60 * 1000); // reset to 25 minutes
     }
   };
 
   const handleTimeClick = () => setIsEditing(true);
 
   const handleInputChange = (e) => {
-    const value = e.target.value;
-    if (/^\d*$/.test(value)) setTime(Number(value) * 60);
+    const value = e.target.value.split(':');
+    if (
+      value.length === 2 &&
+      /^\d*$/.test(value[0]) &&
+      /^\d*$/.test(value[1])
+    ) {
+      const minutes = Number(value[0]);
+      const seconds = Number(value[1]);
+      setTime((minutes * 60 + seconds) * 1000); // convert minutes and seconds to milliseconds
+    }
   };
 
   const handleInputBlur = () => setIsEditing(false);
@@ -133,70 +116,35 @@ const Pomo = () => {
     if (e.key === 'Enter') setIsEditing(false);
   };
 
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
-
-  const handleDragStart = (startX, startY) => {
-    const handleDragMove = (moveX, moveY) => {
-      const newX = Math.max(0, Math.min(window.innerWidth, moveX - startX));
-      const newY = Math.max(0, Math.min(window.innerHeight, moveY - startY));
-      setPosition({ x: newX, y: newY });
-    };
-
-    const handleDragEnd = () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleTouchEnd);
-    };
-
-    const handleMouseMove = (e) => handleDragMove(e.clientX, e.clientY);
-    const handleMouseUp = handleDragEnd;
-    const handleTouchMove = (e) =>
-      handleDragMove(e.touches[0].clientX, e.touches[0].clientY);
-    const handleTouchEnd = handleDragEnd;
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('touchmove', handleTouchMove);
-    document.addEventListener('touchend', handleTouchEnd);
-  };
-
-  const handleMouseDown = (e) =>
-    handleDragStart(e.clientX - position.x, e.clientY - position.y);
-  const handleTouchStart = (e) =>
-    handleDragStart(
-      e.touches[0].clientX - position.x,
-      e.touches[0].clientY - position.y
-    );
+  const minutes = Math.floor(time / (60 * 1000));
+  const seconds = Math.floor((time % (60 * 1000)) / 1000);
+  const milliseconds = Math.floor((time % 1000) / 10);
 
   return (
     <PomoText>
-      <DraggableDiv
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
-        y={position.y}
-        x={position.x}
-      >
-        <p>PixelPomodoro!</p>
+      <Draggable>
+        <p>PixelPomodoro</p>
         <TimeDisplay onClick={handleTimeClick}>
           {isEditing ? (
             <TimeInput
               type='text'
-              value={minutes}
+              value={`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
               onChange={handleInputChange}
               onBlur={handleInputBlur}
               onKeyDown={handleInputKeyDown}
               autoFocus
             />
           ) : (
-            `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+            `${minutes}:${seconds < 10 ? '0' : ''}${seconds}:${
+              milliseconds < 10 ? '0' : ''
+            }${milliseconds}`
           )}
         </TimeDisplay>
-        <button onClick={() => handleButtonClick('start')}>Start</button>
-        <button onClick={() => handleButtonClick('stop')}>Stop</button>
-        <button onClick={() => handleButtonClick('restart')}>Restart</button>
-      </DraggableDiv>
+
+        <Button onClick={() => handleButtonClick('start')}>Start</Button>
+        <Button onClick={() => handleButtonClick('stop')}>Stop</Button>
+        <Button onClick={() => handleButtonClick('restart')}>Restart</Button>
+      </Draggable>
     </PomoText>
   );
 };

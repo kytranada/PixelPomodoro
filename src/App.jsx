@@ -59,7 +59,7 @@ const App = () => {
       
       Click on the gear icon to change the background.
       
-      You can move a few things around
+      The Timer and Task List are draggable.
       
       Hint - If you're on desktop, try resizing your browser! ;)
     `);

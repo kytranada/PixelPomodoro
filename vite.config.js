@@ -1,12 +1,15 @@
-import MillionLint from '@million/lint';
-import { defineConfig } from 'vite';
+import million from 'million/compiler';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), MillionLint.vite()],
-  build: {
-    outDir: 'dist',
-    emptyOutDir: true,
-  },
+  plugins: [
+    million.vite({
+      auto: {
+        threshold: 0.05,
+        skip: ['useBadHook', /badVariable/g],
+      },
+    }),
+    react(),
+  ],
 });
